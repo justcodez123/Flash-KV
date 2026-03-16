@@ -1,0 +1,38 @@
+
+1. The Core Data Structures
+
+These are the containers that hold your data in RAM.
+
+    std::unordered_map: The heart of the database. This is a Hash Table. We used it inside each shard because it gives us O(1) time complexity. Whether you have 10 keys or 10 million keys, finding a key takes the exact same fraction of a millisecond.
+
+    std::array: The fixed-size array. We used this for the 1024 Shards. Unlike a vector, it grabs all its memory the exact second the program boots and never moves it, which is why it stopped the compiler from crashing when dealing with Mutexes.
+
+    std::queue: The First-In-First-Out (FIFO) task line. We used this in the Thread Pool. epoll will push network requests into the back, and your sleeping threads will pop them off the front.
+
+    std::vector: The dynamic array. We used this to hold your std::thread worker objects because it allows us to easily push 4, 8, or 16 threads into a list during boot-up.
+
+2. The Concurrency Heavyweights (The Multithreading)
+
+This is the elite system-level stuff that separates this project from a standard college homework assignment.
+
+    std::thread: The actual software representation of your physical CPU cores. We spun up 4 of these and trapped them in an infinite loop.
+
+    std::mutex: The "Gate." We put one of these inside every single shard (1024 total) to achieve Lock Striping. It physically prevents two threads from editing the same hash map at the exact same time.
+
+    std::condition_variable: The "Wake-Up Bell." Instead of having your threads burn 100% of your CPU constantly checking if the queue is empty, this tool puts the threads to sleep (0% CPU) and instantly wakes them up the millisecond a task arrives.
+
+3. The Lock Managers (RAII)
+
+We never manually called .lock() or .unlock(). We used these smart wrappers to do it safely based on Scope {}.
+
+    std::lock_guard: The basic bouncer. It grabs a mutex when created and releases it the exact microsecond the function ends.
+
+    std::unique_lock: The flexible bouncer. We used this in the Thread Pool because it allows the condition_variable to temporarily unlock the queue while the thread goes to sleep.
+
+    std::scoped_lock: The deadlock-killer. We used this for the rename_key function because it can lock multiple shards at the exact same time without them accidentally blocking each other forever.
+
+4. Types & Utilities
+
+    std::variant: The type-safe union. We used this inside FlashObject. It tells the compiler: "This variable is allowed to be a String, OR a List, OR a Hash, but absolutely nothing else." * std::function: The wrapper for Lambdas. In the Thread Pool, our queue holds std::function<void()>. This is how we package up a block of code (like a database write) and pass it to a thread to execute later.
+
+    std::string: The standard C++ text handler. We pass it by reference (const std::string&) everywhere to prevent the OS from wasting RAM copying massive text blocks.

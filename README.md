@@ -1,4 +1,4 @@
-# ⚡ FlashKV: High-Throughput Multithreaded Key-Value Store
+#  FlashKV: High-Throughput Multithreaded Key-Value Store
 
 ![C++17](https://img.shields.io/badge/C++-17-blue.svg) ![Linux](https://img.shields.io/badge/OS-Linux%20(epoll)-orange.svg) ![Architecture](https://img.shields.io/badge/Architecture-Multithreaded-success.svg)
 
@@ -6,7 +6,7 @@ FlashKV is a high-performance, in-memory Key-Value database engineered entirely 
 
 Designed to overcome the single-thread bottlenecks of traditional in-memory stores (like standard Redis), FlashKV implements a deeply multithreaded architecture utilizing **1024-way Lock Striping**, a zero-idle-CPU custom Thread Pool, and an asynchronous `epoll` network layer.
 
-## 🧠 Core Architecture
+##  Core Architecture
 
 FlashKV was built to demonstrate deep, bare-metal understanding of Linux system calls, concurrency, and memory management.
 
@@ -24,7 +24,7 @@ To ensure the `epoll` receptionist never freezes, raw TCP strings are pushed dir
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 * Linux Environment (Ubuntu recommended)

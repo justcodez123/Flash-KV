@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <string>
 #include<array>
@@ -81,6 +82,19 @@ public:
             }
         }
         return false; // Key not found or wrong data type
+    }
+
+    bool delete_key(const std::string& key) {
+        size_t idx = get_shard_index(key);
+
+        std::lock_guard<std::mutex> lock(shards[idx].mtx);
+
+        auto it = shards[idx].kv_store.find(key);
+        if (it != shards[idx].kv_store.end()) {
+            shards[idx].kv_store.erase(it);
+            return true;
+        }
+        return false;
     }
 
     // ==========================================

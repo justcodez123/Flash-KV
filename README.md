@@ -1,5 +1,4 @@
 #  FlashKV: High-Throughput Multithreaded Key-Value Store
-### Check prod branch for latest updated Flash-KV
 
 ![C++17](https://img.shields.io/badge/C++-17-blue.svg) ![Linux](https://img.shields.io/badge/OS-Linux%20(epoll)-orange.svg) ![Architecture](https://img.shields.io/badge/Architecture-Multithreaded-success.svg)
 

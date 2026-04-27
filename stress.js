@@ -15,7 +15,7 @@ for (let i = 0; i < TOTAL_CONNECTIONS; i++) {
     client.connect(6379, '127.0.0.1', () => {
         connectedCount++;
         // The millisecond we connect, blast the server with a message
-        client.write(`Hello from asynchronous client ${i}!\n`);
+        client.write(`Hello client ${i}!\n`);
     });
 
     // Listen for the "+OK\n" response
